@@ -5,48 +5,53 @@ ini_set('error_reporting', (string)E_ALL);
 ini_set('display_errors', '1');
 ini_set('display_startup_errors', '1');
 
-class Auto
-{
-  private $plateNumber;
-  public function __construct($number = "AUTO_NUMBER")
+abstract class MyAbstactProduct {
+  protected $quantity;
+  protected $price;
+  function __construct( int $quantity, int $price)
   {
-    $this->setPlateNumber($number);
+    $this->quantity = $quantity;
+    $this->price = $price;
   }
-  public function __destruct()
+  abstract protected function FinalСost();
+  public function getCost()
   {
-    echo "Удаляем {$this->plateNumber}!<br>";
-  }
-  public function getPlateNumber()
-  {
-    return $this->plateNumber;
-  }
-  private function setPlateNumber($number)
-  {
-    $this->plateNumber = $number;
-    return $this;
+    echo $this->FinalСost();
   }
 }
 
-$automobile = new Auto('7777');
-echo $automobile->getPlateNumber() . "<br>";
-$automobile2 = new Auto();
-unset($automobile);
-// echo "iii<br>";
-
-class Website
-{
-  public const DE = 2;
-  public const FR = 4;
-
-  public static function sayHello($store)
+class DigitalProduct extends MyAbstactProduct {
+  protected function FinalСost()
   {
-    if ($store == self::DE) {
-      echo "Guten Tag<br>";
-    } elseif ($store == self::FR) {
-      echo "Bonjour<br>";
+    return "digital product cost = " . $this->quantity * $this->price . "<br>";
+  }
+}
+
+class PieceGoods extends MyAbstactProduct {
+  protected function FinalСost()
+  {
+    return "piece goods cost = " . $this->quantity * $this->price . "<br>";
+  }
+}
+
+class WeightGoods extends MyAbstactProduct {
+  protected function FinalСost()
+  {
+    if ($this->quantity < 2.5)
+      return "weight goods cost = " . $this->quantity * $this->price . "<br>";
+    if ($this->quantity > 2.5 && $this->quantity < 20)
+      return "weight goods cost = " . $this->quantity * ($this->price - $this->price * 0.1) . "<br>";
+    else {
+      return "weight goods cost = " . $this->quantity * $this->price * 0.25 . "<br>";
     }
   }
 }
 
-Website::sayHello(4);
+$DP = new DigitalProduct(2, 45);
+$DP->getCost();
 
+$PG = new PieceGoods(3, 45);
+$PG->getCost();
+
+$WG = new WeightGoods(21, 45);
+$WG->getCost();
