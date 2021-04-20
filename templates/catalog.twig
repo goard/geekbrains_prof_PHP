@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <title>{{ title }}</title>
+  </head>
+  <body>
+    <header>
+      {% include 'navbar.twig' %}
+    </header>
+    <main>
+      <div class="container">
+        <div class="row">
+          {% if goods %}
+          {% for good in goods %}
+          <div class="col">
+            <div class='card mt-3' style='width: 18rem;'>
+              <img src={{good.path_img}} class='card-img-top' alt={{good.name}}>
+              <div class='card-body'>
+                <h5 class='card-title'>{{good.name}}</h5>
+                <p class='card-text mb-0'>Цена {{good.price}} &#8381;</p>
+                <a href='product.php?id_product={{ good.id_goods|escape }}' class='btn btn-primary mt-3'>Открыть</a>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+          {% else %}
+            <b>Список товаров пуст</b>
+          {% endif %}
+        </div>
+      </div>
+    </main>
+  </body>
+</html>
