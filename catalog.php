@@ -6,26 +6,25 @@ ini_set('display_errors', '1');
 ini_set('display_startup_errors', '1');
 
 require_once 'vendor/autoload.php';
+include_once 'db.php';
 
 try {
   $loader = new \Twig\Loader\FilesystemLoader('templates');
   $twig = new \Twig\Environment($loader);
-  $link = mysqli_connect("localhost", "root", "", "shop");
-  if (!$link) die('Ошибка соединения' . mysqli_error($link));
-  $result = mysqli_query($link, "SELECT id_goods, name, price, quantity, path_img FROM goods");
-  $goods = [];
-  while ($row = mysqli_fetch_assoc($result)){
-    $goods[] = $row;
-  }
-  if (empty($goods)) {
-    throw new Exception("Error!");
-  }
+  $sql = "SELECT COUNT(*) as counter FROM goods";
+  $sth = $pdo->query($sql);
+  $row = $sth->fetch(PDO::FETCH_ASSOC);
+  $totalPages = ceil($row['counter']/ROWS_NUM);
+
+  // if (empty($goods)) {
+  //   throw new Exception("Error!");
+  // }
+
   $template = $twig->load('catalog.twig');
   $template->display([
     'title' => 'Товары',
-    'goods' => $goods,
+    'total_pages' => $totalPages,
   ]);
-  mysqli_close($link);
 } catch (Exception $e) {
   die ('error: ' . $e->getMessage());
 } catch (\Throwable $th) {
