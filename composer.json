@@ -1,9 +1,19 @@
 {
+    "name": "ayur/profphp",
+    "description": "mvc",
     "require": {
-        "twig/twig": "^3.0"
+        "twig/twig": "^3.3",
+        "vlucas/phpdotenv": "^5.3"
     },
+    "authors": [
+        {
+            "name": "Gonchikov Ayur",
+            "email": "hori.tumat@gmail.com"
+        }
+    ],
     "autoload": {
-        "psr-4": {"": "src/"}
-    },
-    "description": ""
+        "psr-4": {
+            "app\\":"./"
+        }
+    }
 }
