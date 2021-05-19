@@ -1,5 +1,9 @@
 AddDefaultCharset UTF-8
-DirectoryIndex index.php index.html
+DirectoryIndex public/index.php public/index.html
+<Files "composer.json">
+Order Allow,Deny
+Deny from all
+</Files>
 RewriteEngine on
 RewriteCond %{REQUEST_FILENAME} -f [NC,OR]
 RewriteCond %{REQUEST_FILENAME} -d [NC]

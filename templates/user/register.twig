@@ -1,40 +1,55 @@
-<h1>Register</h1>
-{{dump(model.hasError('name'))}}
-<form action="" method="post">
-	<div class="mb-3">
-		<label for="nameInput" class="form-label">Имя</label>
-		<input
-			type="text"
-			name="name"
-			id="nameInput"
-			class="{{model.hasError('name') ? 'form-control is-invalid': 'form-control'}}"
-			value="{{ model.name }}"
-		/>
-		<div class="invalid-feedback">
+<h1>Create an account</h1>
+{# <pre>
+  {{ dump(model.hasError('name')) }}
+</pre> #}
+<form action="" method="POST">
+  <div class="mb-3">
+    <label>Name</label>
+    <input
+      type="text"
+      name="name"
+      class="form-control{{model.hasError('name') ? ' is-invalid' : ''}}"
+      value={{model.name}}
+    >
+    <div class="invalid-feedback">
       {{model.getFirstError('name')}}
     </div>
-		<label for="emailInput" class="form-label">Email</label>
-		<input
-			type="email"
-			name="login"
-			id="emailInput"
-			class="form-control{{model.hasError('login') ? ' is-invalid' : ''}}"
-			value="{{ model.login }}"
-		/>
-		<div class="invalid-feedback">
+  </div>
+  <div class="mb-3">
+    <label>Email</label>
+    <input
+      type="email"
+      name="login"
+      class="form-control{{model.hasError('login') ? ' is-invalid' : ''}}"
+      value={{model.login}}
+    >
+    <div class="invalid-feedback">
       {{model.getFirstError('login')}}
     </div>
-		<label for="passwordInput" class="form-label">Пароль</label>
-		<input
-			type="password"
-			name="password"
-			id="passwordInput"
-			class="form-control{{model.hasError('password') ? ' is-invalid' : ''}}"
-			value="{{ model.password }}"
-		/>
-		<div class="invalid-feedback">
+  </div>
+  <div class="mb-3">
+    <label>Password</label>
+    <input
+      type="password"
+      name="password"
+      class="form-control{{model.hasError('password') ? ' is-invalid' : ''}}"
+      {# value={{model.password}} #}
+    >
+    <div class="invalid-feedback">
       {{model.getFirstError('password')}}
     </div>
-	</div>
-	<button type="submit" class="btn btn-primary">Submit</button>
+  </div>
+  <div class="mb-3">
+    <label>Confirm password</label>
+    <input
+      type="password"
+      name="confirmPassword"
+      class="form-control{{model.hasError('confirmPassword') ? ' is-invalid' : ''}}"
+      {# value={{model.confirmPassword}} #}
+    >
+    <div class="invalid-feedback">
+      {{model.getFirstError('confirmPassword')}}
+    </div>
+  </div>
+  <button type="submit" class="btn btn-primary">Submit</button>
 </form>

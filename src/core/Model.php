@@ -10,6 +10,7 @@ abstract class Model
   public const RULE_MAX = 'max';
   public const RULE_MATCH = 'match';
 
+
   public function loadData($data)
   {
     foreach ($data as $key => $value) {
@@ -21,17 +22,13 @@ abstract class Model
 
   abstract public function rules(): array;
 
-  public $errors = [];
+  public array $errors = [];
 
   public function validate()
   {
     foreach ($this->rules() as $attribute => $rules) {
       $value = $this->{$attribute};
-      // var_dump($value);
-
       foreach ($rules as $rule) {
-        // var_dump($rule);
-
         $ruleName = $rule;
         if (!is_string($ruleName)) {
           $ruleName = $rule[0];
@@ -53,7 +50,6 @@ abstract class Model
         }
       }
     }
-
     return empty($this->errors);
   }
 
@@ -69,23 +65,21 @@ abstract class Model
   public function addError(string $attribute, string $message)
   {
     $this->errors[$attribute][] = $message;
-    var_dump($this->errors);
   }
 
   public function errorMessages()
   {
     return [
-      self::RULE_REQUIRED => 'This field is required',
-      self::RULE_EMAIL => 'This field must be valid email address',
-      self::RULE_MIN => 'Min length of this field must be {min}',
-      self::RULE_MAX => 'Max length of this filed must be {max}',
-      self::RULE_MATCH => 'This field must be the same as {match}',
+      self::RULE_REQUIRED => 'Поле обязательно',
+      self::RULE_EMAIL => 'Добавьте email',
+      self::RULE_MIN => 'Минимальное количество символов {min}',
+      self::RULE_MAX => 'Максимальное количество символов {max}',
+      self::RULE_MATCH => 'Это поле должен совпадать с полем {match}',
     ];
   }
 
   public function hasError($attribute)
   {
-    // var_dump($this->errors[$attribute]);
     return $this->errors[$attribute] ?? false;
   }
 

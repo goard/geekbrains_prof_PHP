@@ -10,10 +10,11 @@ class SiteController extends Controller
   public function home()
   {
     $params = [
-      'name' => "Hi every body"
+      'name' => "Hi Ayur"
     ];
     return $this->render('home', $params);
   }
+
   public function contact()
   {
     return $this->render('contact');
@@ -22,6 +23,10 @@ class SiteController extends Controller
   public function handleContact(Request $request)
   {
     $body = $request->getBody();
+    echo '<pre>';
+    var_dump($request->method());
+    echo '</pre>';
+    exit;
     return 'Handling submitted data';
   }
 }

@@ -4,24 +4,26 @@ namespace app\src\core;
 
 class Application
 {
-  public static $ROOT_DIR;
-  public $router;
-  public $request;
-  public $response;
-  public $db;
-  public static $app;
-  public $controller;
-  public $session;
-  public static $rootURL;
-  public $user;
-  public $userClass;
+  public static string $ROOT_DIR;
 
-  public function __construct($rootPath, array $config, $root)
+  public string $layout = 'main';
+  public string $userClass;
+  public Router $router;
+  public Request $request;
+  public Response $response;
+  public Session $session;
+  public Database $db;
+  public ?DbModel $user;
+  public ?DbModel $orders;
+
+  public static Application $app;
+  public ?Controller $controller = null;
+
+  public function __construct($rootPath, array $config)
   {
     $this->userClass = $config['userClass'];
     self::$ROOT_DIR = $rootPath;
     self::$app = $this;
-    self::$rootURL = $root;
     $this->request = new Request();
     $this->response = new Response();
     $this->session = new Session();
@@ -37,14 +39,16 @@ class Application
     }
   }
 
-  public static function isGuest()
-  {
-    return !self::$app->user;
-  }
-
   public function run()
   {
-    echo $this->router->resolve();
+    try {
+      echo $this->router->resolve();
+    } catch (\Exception $e) {
+      $this->response->setStatusCode($e->getCode());
+      echo $this->router->renderView('_error', [
+        'exception' => $e
+      ]);
+    }
   }
 
   public function getController(): Controller
@@ -57,7 +61,7 @@ class Application
     $this->controller = $controller;
   }
 
-  public function login(DBModel $user)
+  public function login(UserModel $user)
   {
     $this->user = $user;
     $primaryKey = $user->primaryKey();
@@ -72,4 +76,8 @@ class Application
     $this->session->remove('user');
   }
 
+  public function isGuest()
+  {
+    return !self::$app->user;
+  }
 }

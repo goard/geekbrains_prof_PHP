@@ -18,7 +18,7 @@ class View
   public function show()
   {
     try {
-      $loader = new FilesystemLoader('templates');
+      $loader = new FilesystemLoader(Application::$ROOT_DIR . '/templates');
       $twig = new \Twig\Environment($loader, [
         'debug' => true
       ]);
@@ -33,7 +33,7 @@ class View
     }
   }
 
-  public function setData(array $data = []): self
+  public function setData(array $data=[]): self
   {
     $this->data = $data;
     return $this;

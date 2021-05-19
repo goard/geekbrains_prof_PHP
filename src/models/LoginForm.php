@@ -1,14 +1,14 @@
 <?php
 
-namespace app\src\model;
+namespace app\src\models;
 
 use app\src\core\Application;
 use app\src\core\Model;
 
 class LoginForm extends Model
 {
-  public $login = '';
-  public $password = '';
+  public string $login = '';
+  public string $password = '';
 
   public function rules(): array
   {
@@ -20,13 +20,13 @@ class LoginForm extends Model
 
   public function login()
   {
-    $user = UserModel::findOne(['login' => $this->login]);
+    $user = User::findOne(['login' => $this->login]);
     if (!$user) {
-      $this->addError('login', 'Нет логина в базе данных');
+      $this->addError('login', 'Пользователь не существует');
       return false;
     }
     if (!password_verify($this->password, $user->password)) {
-      $this->addError('password', 'Неверный пароль');
+      $this->addError('password', 'Пароль неверно');
       return false;
     }
 
