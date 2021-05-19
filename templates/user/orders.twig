@@ -1,0 +1,60 @@
+<pre>
+
+</pre>
+{# {{ dump(model.ordersShow()) }} #}
+<h1>Order shop</h1>
+<table class="table">
+	<thead>
+		<tr>
+			<th scope="col">#</th>
+			<th scope="col">Имя</th>
+			<th scope="col">Адрес</th>
+			<th scope="col">Телефон</th>
+			<th scope="col">Статус заказа</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+		{% set arrOrders = model.ordersShow() %}
+		{% for key, row in arrOrders %}
+			<tr>
+				<form>
+					<input type="hidden" name="id" value={{row.id}}>
+					<th>{{key + 1}}</th>
+					<th>{{row.name}}</th>
+					<th>{{row.address}}</th>
+					<th>{{row.phone}}</th>
+					<th>
+						<select name="status" class="form-select" aria-label="Default select example">
+              <option selected>{{row.status}}</option>
+							<option value="Оплачен">Оплачен</option>
+							<option value="Ждем оплаты">Ждем оплаты</option>
+							<option value="Доставляется">Доставляется</option>
+						</select>
+					</th>
+					<th>
+						<button type="submit" class="btn btn-primary">Отправить</button>
+					</th>
+				</form>
+			</tr>
+		{% endfor %}
+	</tbody>
+</table>
+{% block javascript %}
+	<script>
+		'use strict'
+    let formArr = document.querySelectorAll("form");
+    formArr.forEach(el => {
+      el.addEventListener("submit", (event) => sendHandler(el, event));
+    });
+    function sendHandler(el, event) {
+      event.preventDefault();
+      fetch("orders", {
+        method: 'POST',
+        body: new FormData(el)
+      })
+      .then(res => {return res.text()})
+      .then(data => {console.log(data)})
+    }
+	</script>
+{% endblock %}
