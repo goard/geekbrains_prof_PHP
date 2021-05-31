@@ -10,12 +10,16 @@ use app\src\models\LoginForm;
 use app\src\models\User;
 use app\src\models\Orders;
 use app\src\core\middlewares\AuthMiddleware;
+use app\src\models\Product;
+use ErrorException;
+use Exception;
+use Prophecy\Doubler\ClassPatch\ThrowablePatch;
 
 class AuthController extends Controller
 {
   public function __construct()
   {
-    $this->registerMiddleware(new AuthMiddleware(['orders']));
+    $this->registerMiddleware(new AuthMiddleware(['orders', 'product']));
   }
   public function login(Request $request, Response $response)
   {
@@ -58,13 +62,13 @@ class AuthController extends Controller
     ]);
   }
 
-  public function logout (Request $request, Response $response)
+  public function logout(Request $request, Response $response)
   {
     Application::$app->logout();
     $response->redirect('/profphp/');
   }
 
-  public function orders (Request $request)
+  public function orders(Request $request)
   {
     $orders = new Orders();
     if ($request->isPost()) {
@@ -72,8 +76,37 @@ class AuthController extends Controller
       $orders->changeStatus($_POST['id']);
     }
 
-    return $this->render('orders',[
+    return $this->render('orders', [
       'model' => $orders
     ]);
+  }
+
+  public function product(Request $request)
+  {
+    try {
+      $product = new Product();
+      $switch = false;
+      if ($request->isGet()) {
+        $arrBody = $request->getBody();
+        foreach ($arrBody as $key => $value) {
+          if ($key === 'id') {
+            $switch = true;
+          }
+        }
+        if (!$switch) {
+          throw new ErrorException('Нет данных', 440);
+        }
+        $product->loadData($request->getBody());
+        $productClass = $product->productShow();
+      }
+
+      return $this->render('product', [
+        'model' => $productClass
+      ]);
+    } catch (\ErrorException $e) {
+      return $e;
+    } catch (\Throwable $th) {
+      throw $th;
+    }
   }
 }

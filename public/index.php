@@ -31,5 +31,6 @@ $app->router->post("$root/register", [AuthController::class, 'register']);
 $app->router->get("$root/logout", [AuthController::class, 'logout']);
 $app->router->get("$root/orders", [AuthController::class, 'orders']);
 $app->router->post("$root/orders", [AuthController::class, 'orders']);
+$app->router->get("$root/product", [AuthController::class, 'product']);
 
 $app->run();
