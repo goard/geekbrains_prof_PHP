@@ -1,0 +1,12 @@
+AddDefaultCharset UTF-8
+DirectoryIndex public/index.php public/index.html
+<Files "composer.json">
+Order Allow,Deny
+Deny from all
+</Files>
+RewriteEngine on
+RewriteCond %{REQUEST_FILENAME} -f [NC,OR]
+RewriteCond %{REQUEST_FILENAME} -d [NC]
+RewriteRule .* - [L]
+RewriteRule ^(.*)/$ ?path=$1 [QSA,L]
+RewriteRule ^(.*)?$ ?path=$1 [QSA,L]

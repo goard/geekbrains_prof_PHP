@@ -1,0 +1,16 @@
+<h1>Product</h1>
+{# {{ dump(model) }} #}
+{% if (model.hasError('product')) %}
+	<div>
+		{{model.getFirstError('product')}}
+	</div>
+{% else %}
+	<div class="card" style="width: 18rem;">
+		<img src="{{model.imageUrl}}" class="card-img-top" alt="{{product.name}}">
+		<div class="card-body">
+			<h5 class="card-title">{{model.name}}</h5>
+			<p class="card-text">{{model.description}}</p>
+			<a href="#" class="btn btn-primary">Купить</a>
+		</div>
+	</div>
+{% endif %}
